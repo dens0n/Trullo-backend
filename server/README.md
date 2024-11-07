@@ -1,5 +1,35 @@
 # Trullo
 
+## Innehållsförteckning
+- [Resonemang](#resonemang)
+- [Teknologier](#teknologier)
+- [Installation](#installation)
+  - [Förutsättningar](#förutsättningar)
+  - [Klona repot](#klona-repot)
+  - [Installera beroenden](#installera-beroenden)
+  - [Konfigurera miljövariabler](#konfigurera-miljövariabler)
+  - [Starta servern](#starta-servern)
+- [API Reference](#api-reference)
+  - [Användarhantering](#användarhantering)
+    - [Registrera användare](#registrera-användare)
+    - [Logga in användare](#logga-in-användare)
+    - [Logga ut användare](#logga-ut-användare)
+    - [Hämta alla användare](#hämta-alla-användare)
+    - [Uppdatera användare](#uppdatera-användare)
+    - [Ta bort användare](#ta-bort-användare)
+  - [Projekthantering](#projekthantering)
+    - [Skapa projekt](#skapa-projekt)
+    - [Hämta alla projekt](#hämta-alla-projekt)
+    - [Hämta specifikt projekt](#hämta-specifikt-projekt)
+    - [Uppdatera projekt](#uppdatera-projekt)
+    - [Ta bort projekt](#ta-bort-projekt)
+  - [Uppgiftshantering](#uppgiftshantering)
+    - [Skapa uppgift](#skapa-uppgift)
+    - [Hämta alla uppgifter](#hämta-alla-uppgifter)
+    - [Tilldela uppgift](#tilldela-uppgift)
+    - [Uppdatera uppgift](#uppdatera-uppgift)
+    - [Ta bort uppgift](#ta-bort-uppgift)
+
 Trullo är en kanban-API byggd med Express och MongoDB. Den är designad för att hantera projekt, uppgifter och användare genom ett RESTful API.
 
 ## Resonemang
@@ -10,8 +40,8 @@ En annan anledning var att MongoDB är designat för att hantera stora mängder 
 
 ## Teknologier
 
-- **Backend**: Node.js, Express, MongoDB
-- **Verktyg**: ESLint, Prettier
+-   **Backend**: Node.js, Express, MongoDB
+-   **Verktyg**: ESLint, Prettier
 
 ## Installation
 
@@ -19,9 +49,9 @@ En annan anledning var att MongoDB är designat för att hantera stora mängder 
 
 Se till att du har följande installerat:
 
-- Node.js
-- npm eller yarn
-- MongoDB
+-   Node.js
+-   npm eller yarn
+-   MongoDB
 
 ### Klona repot
 
@@ -59,6 +89,7 @@ För att enklare testa endpointsen så kan man inportera Project Management API.
 ## Användarhantering
 
 ### Registrera användare
+
 ```http
 POST http://localhost:3000/api/signup
 Content-Type: application/json
@@ -72,6 +103,7 @@ Content-Type: application/json
 ```
 
 ### Logga in användare
+
 ```http
 POST http://localhost:3000/api/login
 Content-Type: application/json
@@ -83,16 +115,19 @@ Content-Type: application/json
 ```
 
 ### Logga ut användare
+
 ```http
 POST http://localhost:3000/api/logout
 ```
 
 ### Hämta alla användare
+
 ```http
 GET http://localhost:3000/api/users
 ```
 
 ### Uppdatera användare
+
 ```http
 PATCH http://localhost:3000/api/users/${userId}
 Content-Type: application/json
@@ -103,6 +138,7 @@ Content-Type: application/json
 ```
 
 ### Ta bort användare
+
 ```http
 DELETE http://localhost:3000/api/users/${userId}
 ```
@@ -110,6 +146,7 @@ DELETE http://localhost:3000/api/users/${userId}
 ## Projekthantering
 
 ### Skapa projekt
+
 ```http
 POST http://localhost:3000/api/projects
 Content-Type: application/json
@@ -120,16 +157,19 @@ Content-Type: application/json
 ```
 
 ### Hämta alla projekt
+
 ```http
 GET http://localhost:3000/api/projects
 ```
 
 ### Hämta specifikt projekt
+
 ```http
 GET http://localhost:3000/api/projects/${projectId}
 ```
 
 ### Uppdatera projekt
+
 ```http
 PATCH http://localhost:3000/api/projects/${projectId}
 Content-Type: application/json
@@ -140,6 +180,7 @@ Content-Type: application/json
 ```
 
 ### Ta bort projekt
+
 ```http
 DELETE http://localhost:3000/api/projects/${projectId}
 ```
@@ -147,6 +188,7 @@ DELETE http://localhost:3000/api/projects/${projectId}
 ## Uppgiftshantering
 
 ### Skapa uppgift
+
 ```http
 POST http://localhost:3000/api/tasks
 Content-Type: application/json
@@ -160,16 +202,19 @@ Content-Type: application/json
 ```
 
 ### Hämta alla uppgifter
+
 ```http
 GET http://localhost:3000/api/tasks
 ```
 
 ### Tilldela uppgift
+
 ```http
 PATCH http://localhost:3000/api/tasks/${taskId}/assign/${userId}
 ```
 
 ### Uppdatera uppgift
+
 ```http
 PATCH http://localhost:3000/api/tasks/${taskId}
 Content-Type: application/json
@@ -180,6 +225,7 @@ Content-Type: application/json
 ```
 
 ### Ta bort uppgift
+
 ```http
 DELETE http://localhost:3000/api/tasks/${taskId}
 ```
