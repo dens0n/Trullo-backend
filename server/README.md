@@ -40,8 +40,7 @@ En annan anledning var att MongoDB är designat för att hantera stora mängder 
 
 ## Teknologier
 
--   **Backend**: Node.js, Express, MongoDB
--   **Verktyg**: ESLint, Prettier
+Node.js, Express, TypeScript, MongoDB, Mongoose, JWT, Bcrypt, CORS
 
 ## Installation
 
