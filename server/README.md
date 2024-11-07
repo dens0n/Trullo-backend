@@ -54,6 +54,8 @@ npm run dev
 
 # API Reference
 
+För att enklare testa endpointsen så kan man inportera Project Management API.postman_collection.json filen till postman
+
 ## Användarhantering
 
 ### Registrera användare
