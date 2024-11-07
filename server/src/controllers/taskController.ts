@@ -8,8 +8,8 @@ export const createTask = async (req: Request, res: Response) => {
         const { title, description, projectId, finishedBy } = req.body;
 
         if (!title || !description || !projectId) {
-            return res.status(400).json({ 
-                message: 'Titel, beskrivning och projektId krävs' 
+            return res.status(400).json({
+                message: 'Titel, beskrivning och projektId krävs',
             });
         }
 
@@ -17,21 +17,22 @@ export const createTask = async (req: Request, res: Response) => {
             title,
             description,
             finishedBy,
-            status: 'to-do'
+            status: 'to-do',
         });
 
         // Lägg till task i projektet
-        await Project.findByIdAndUpdate(
-            projectId,
-            { $push: { tasks: task._id } }
-        );
+        await Project.findByIdAndUpdate(projectId, {
+            $push: { tasks: task._id },
+        });
 
-        const populatedTask = await Task.findById(task._id)
-            .populate('assignedTo', 'name email');
+        const populatedTask = await Task.findById(task._id).populate(
+            'assignedTo',
+            'name email'
+        );
 
         res.status(201).json({
             message: 'Uppgift skapad',
-            task: populatedTask
+            task: populatedTask,
         });
     } catch (error) {
         res.status(500).json({ message: 'Kunde inte skapa uppgift' });
@@ -41,8 +42,7 @@ export const createTask = async (req: Request, res: Response) => {
 // Get all tasks
 export const getAllTasks = async (req: Request, res: Response) => {
     try {
-        const tasks = await Task.find()
-            .populate('assignedTo', 'name email');
+        const tasks = await Task.find().populate('assignedTo', 'name email');
         res.json(tasks);
     } catch (error) {
         res.status(500).json({ message: 'Kunde inte hämta uppgifter' });
@@ -55,17 +55,20 @@ export const updateTask = async (req: Request, res: Response) => {
         const { id } = req.params;
         const { title, description, status, finishedBy } = req.body;
 
-        const updateData: any = {};
+        const updateData: {
+            title?: string;
+            description?: string;
+            status?: string;
+            finishedBy?: string;
+        } = {};
         if (title) updateData.title = title;
         if (description) updateData.description = description;
         if (status) updateData.status = status;
         if (finishedBy) updateData.finishedBy = finishedBy;
 
-        const task = await Task.findByIdAndUpdate(
-            id,
-            updateData,
-            { new: true }
-        ).populate('assignedTo', 'name email');
+        const task = await Task.findByIdAndUpdate(id, updateData, {
+            new: true,
+        }).populate('assignedTo', 'name email');
 
         if (!task) {
             return res.status(404).json({ message: 'Uppgift hittades inte' });
@@ -73,7 +76,7 @@ export const updateTask = async (req: Request, res: Response) => {
 
         res.json({
             message: 'Uppgift uppdaterad',
-            task
+            task,
         });
     } catch (error) {
         res.status(500).json({ message: 'Kunde inte uppdatera uppgift' });
@@ -91,10 +94,7 @@ export const deleteTask = async (req: Request, res: Response) => {
         }
 
         // Ta bort task-referensen från projekt
-        await Project.updateMany(
-            { tasks: id },
-            { $pull: { tasks: id } }
-        );
+        await Project.updateMany({ tasks: id }, { $pull: { tasks: id } });
 
         await task.deleteOne();
 
@@ -121,7 +121,7 @@ export const assignTask = async (req: Request, res: Response) => {
 
         res.json({
             message: 'Uppgift tilldelad',
-            task
+            task,
         });
     } catch (error) {
         res.status(500).json({ message: 'Kunde inte tilldela uppgift' });

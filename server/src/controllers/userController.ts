@@ -10,19 +10,25 @@ export const loginUser = async (req: Request, res: Response) => {
 
         // Validera input
         if (!email || !password) {
-            return res.status(400).json({ message: 'Alla fält måste fyllas i' });
+            return res
+                .status(400)
+                .json({ message: 'Alla fält måste fyllas i' });
         }
 
         // Hitta användare
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(401).json({ message: 'Felaktig email eller lösenord' });
+            return res
+                .status(401)
+                .json({ message: 'Felaktig email eller lösenord' });
         }
 
         // Validera lösenord
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return res.status(401).json({ message: 'Felaktig email eller lösenord' });
+            return res
+                .status(401)
+                .json({ message: 'Felaktig email eller lösenord' });
         }
 
         // Skapa JWT token
@@ -37,7 +43,7 @@ export const loginUser = async (req: Request, res: Response) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'strict',
-            maxAge: 24 * 60 * 60 * 1000 // 24 timmar
+            maxAge: 24 * 60 * 60 * 1000, // 24 timmar
         });
 
         res.json({
@@ -46,8 +52,8 @@ export const loginUser = async (req: Request, res: Response) => {
                 id: user._id,
                 name: user.name,
                 email: user.email,
-                role: user.role
-            }
+                role: user.role,
+            },
         });
     } catch (error) {
         res.status(500).json({ message: 'Serverfel vid inloggning' });
@@ -71,13 +77,17 @@ export const createUser = async (req: Request, res: Response) => {
 
         // Validera input
         if (!name || !email || !password) {
-            return res.status(400).json({ message: 'Alla fält måste fyllas i' });
+            return res
+                .status(400)
+                .json({ message: 'Alla fält måste fyllas i' });
         }
 
         // Kolla om användaren redan finns
         const existingUser = await User.findOne({ email });
         if (existingUser) {
-            return res.status(400).json({ message: 'Email är redan registrerad' });
+            return res
+                .status(400)
+                .json({ message: 'Email är redan registrerad' });
         }
 
         // Hasha lösenord
@@ -89,7 +99,7 @@ export const createUser = async (req: Request, res: Response) => {
             name,
             email,
             password: hashedPassword,
-            role: role || 'user'
+            role: role || 'user',
         });
 
         // Skapa token
@@ -104,7 +114,7 @@ export const createUser = async (req: Request, res: Response) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'strict',
-            maxAge: 24 * 60 * 60 * 1000
+            maxAge: 24 * 60 * 60 * 1000,
         });
 
         res.status(201).json({
@@ -113,8 +123,8 @@ export const createUser = async (req: Request, res: Response) => {
                 id: user._id,
                 name: user.name,
                 email: user.email,
-                role: user.role
-            }
+                role: user.role,
+            },
         });
     } catch (error) {
         res.status(500).json({ message: 'Serverfel vid registrering' });
@@ -127,7 +137,9 @@ export const getUsers = async (req: Request, res: Response) => {
         const users = await User.find().select('-password');
         res.json(users);
     } catch (error) {
-        res.status(500).json({ message: 'Serverfel vid hämtning av användare' });
+        res.status(500).json({
+            message: 'Serverfel vid hämtning av användare',
+        });
     }
 };
 
@@ -137,21 +149,24 @@ export const updateUser = async (req: Request, res: Response) => {
         const { id } = req.params;
         const { name, email, password, role } = req.body;
 
-        const updateData: any = {};
+        const updateData: {
+            name?: string;
+            email?: string;
+            role?: string;
+            password?: string;
+        } = {};
         if (name) updateData.name = name;
         if (email) updateData.email = email;
         if (role) updateData.role = role;
-        
+
         if (password) {
             const salt = await bcrypt.genSalt(10);
             updateData.password = await bcrypt.hash(password, salt);
         }
 
-        const user = await User.findByIdAndUpdate(
-            id,
-            updateData,
-            { new: true }
-        ).select('-password');
+        const user = await User.findByIdAndUpdate(id, updateData, {
+            new: true,
+        }).select('-password');
 
         if (!user) {
             return res.status(404).json({ message: 'Användare hittades inte' });
@@ -159,7 +174,9 @@ export const updateUser = async (req: Request, res: Response) => {
 
         res.json({ message: 'Användare uppdaterad', user });
     } catch (error) {
-        res.status(500).json({ message: 'Serverfel vid uppdatering av användare' });
+        res.status(500).json({
+            message: 'Serverfel vid uppdatering av användare',
+        });
     }
 };
 
@@ -175,6 +192,8 @@ export const deleteUser = async (req: Request, res: Response) => {
 
         res.json({ message: 'Användare borttagen' });
     } catch (error) {
-        res.status(500).json({ message: 'Serverfel vid borttagning av användare' });
+        res.status(500).json({
+            message: 'Serverfel vid borttagning av användare',
+        });
     }
 };

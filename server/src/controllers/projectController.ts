@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import Project from '../models/Project';
+import Task from '../models/Task';
 
 export const createProject = async (req: Request, res: Response) => {
     try {
@@ -74,7 +75,7 @@ export const updateProject = async (req: Request, res: Response) => {
         const { id } = req.params;
         const { name } = req.body;
 
-        const updateData: any = {};
+        const updateData: { name?: string } = {};
         if (name) updateData.name = name;
 
         const project = await Project.findByIdAndUpdate(id, updateData, {
@@ -110,8 +111,8 @@ export const deleteProject = async (req: Request, res: Response) => {
             return res.status(404).json({ message: 'Projekt hittades inte' });
         }
 
-        // Här kan du lägga till logik för att ta bort alla tasks som är kopplade till projektet
-        // await Task.deleteMany({ _id: { $in: project.tasks } });
+        // Ta bort alla tasks som är kopplade till projektet
+        await Task.deleteMany({ _id: { $in: project.tasks } });
 
         await project.deleteOne();
 
