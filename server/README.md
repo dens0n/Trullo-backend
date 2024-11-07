@@ -56,7 +56,7 @@ Se till att du har följande installerat:
 ### Klona repot
 
 ```bash
-git clone https://github.com/ditt-användarnamn/trullo.git
+git clone https://github.com/dens0n/Trullo-backend.git
 cd trullo/server
 ```
 
