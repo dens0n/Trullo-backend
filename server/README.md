@@ -84,7 +84,7 @@ npm run dev
 
 # API Reference
 
-För att enklare testa endpointsen så kan man inportera Project Management API.postman_collection.json filen till postman
+För att enklare testa endpointsen så kan man importera "Project Management API.postman_collection.json" filen till postman
 
 ## Användarhantering
 
